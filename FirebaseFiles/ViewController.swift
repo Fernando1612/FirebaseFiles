@@ -161,17 +161,23 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate{
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let viewController = storyboard?.instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController
         let ref = images[indexPath.item]
+        
+        //viewController?.img = UIImage(named: "placeholder")!
+        //viewController?.name = "Detalles de la foto"
+        
         ref.getMetadata { metadata, error in
             if let error = error {
                 print(error.localizedDescription)
             } else {
                 print("Metadata:    \(String(describing: metadata!))")
-                
+                print("Nombre  \(String(describing: metadata?.name!))")
+                print("Tamaño   \(String(describing: metadata?.size))")
+                print("Creacion \(String(describing: metadata?.timeCreated!))")
             }
           }
         
-        viewController?.img = UIImage(named: "placeholder")!
-        viewController?.name = "Detalles de la foto"
+        viewController?.imageRef = ref
+        
         self.navigationController?.pushViewController(viewController!, animated: true)
     }
     
