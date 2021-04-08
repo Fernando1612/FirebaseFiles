@@ -21,8 +21,6 @@ class ViewController: UIViewController{
     
     let placeholderImage = UIImage(named:"placeholder")
     
-    
-    
     let storage = Storage.storage()
     
     var idImage: Int = 1
@@ -44,7 +42,8 @@ class ViewController: UIViewController{
             button.backgroundColor = .red
         }
 
-        downloadImage()
+        //downloadImage()
+        imagenes()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -92,22 +91,42 @@ class ViewController: UIViewController{
         }
     }
     
-    func downloadImage(){
+    func downloadImage(imagen: StorageReference){
+        //let storageRef = storage.reference()
+        
+        //let imageDownloadUrlRef = storageRef.child("images/profile/userProfile.jpg")
+        
+        /*let imagePrubea = storageRef.child("images/profile/1.jpg")
+        let imagePrubea2 = storageRef.child("images/profile/2.jpg")
+        let imagePrubea3 = storageRef.child("images/profile/3.jpg")
+        
+        print("Punto de prueba")
+        print(imagePrubea)
+        
+        images.append(imagePrubea)
+        images.append(imagePrubea2)
+        images.append(imagePrubea3)*/
+        images.append(imagen)
+        
+        
+        userImageView.sd_setImage(with: imagen, placeholderImage: placeholderImage)
+        
+    }
+    
+    
+    func imagenes(){
         let storageRef = storage.reference()
-        
-        let imageDownloadUrlRef = storageRef.child("images/profile/\(idImage).jpg")
-        
-        
-        images.append(imageDownloadUrlRef)
-        
-        userImageView.sd_setImage(with: imageDownloadUrlRef, placeholderImage: placeholderImage)
-
-        imageDownloadUrlRef.downloadURL { (url, error) in
-            if let error = error{
-                print(error.localizedDescription)
-            } else {
-                print("URL:  \(String(describing: url!))")
+        let ref = storageRef.child("images/profile/")
+        ref.listAll { [self] (result, error) in
+            if let error = error {
+               print(error.localizedDescription)
+             }
+             for item in result.items {
+                downloadImage(imagen: item)
             }
+            
+            print("imagenes: \(self.images)")
+            
         }
         
     }
@@ -124,6 +143,7 @@ extension ViewController: UIImagePickerControllerDelegate{
             DispatchQueue.main.async {
                 self.userImageView.image = userImage
             }*/
+            
         }
         picker.dismiss(animated: true, completion: nil)
     }
@@ -139,42 +159,42 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate{
         return images.count
     }
     
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        let cellScale: CGFloat = 0.35
+        let screenSize = UIScreen.main.bounds.size
+        let cellWidth = floor(screenSize.width * cellScale)
+        let cellHeight = floor(screenSize.height * cellScale)
+        let insetX = (view.bounds.width - cellWidth) / 2.0
+        let insetY = (view.bounds.height - cellHeight) / 2.0
+        return UIEdgeInsets(top: 0, left: insetX, bottom: insetY, right: insetX)
+    }
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "imageCellXIB", for: indexPath) as! ImageCollectionViewCell
         
         
-        let ref = images[indexPath.item]
-        
+        let ref = images[indexPath.row]
+        print("Elementos en el arreglo")
+        print(images.count)
         cell.imageViewCell.sd_setImage(with: ref, placeholderImage: placeholderImage)
         
-        ref.downloadURL { (url, error) in
+        /*ref.downloadURL { (url, error) in
             if let error = error{
                 print(error.localizedDescription)
             } else {
                 print("URL:  \(String(describing: url!))")
             }
-        }
+        }*/
         
         return cell
     }
     
+    
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let viewController = storyboard?.instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController
+        
         let ref = images[indexPath.item]
-        
-        //viewController?.img = UIImage(named: "placeholder")!
-        //viewController?.name = "Detalles de la foto"
-        
-        ref.getMetadata { metadata, error in
-            if let error = error {
-                print(error.localizedDescription)
-            } else {
-                print("Metadata:    \(String(describing: metadata!))")
-                print("Nombre  \(String(describing: metadata?.name!))")
-                print("Tamaño   \(String(describing: metadata?.size))")
-                print("Creacion \(String(describing: metadata?.timeCreated!))")
-            }
-          }
         
         viewController?.imageRef = ref
         
@@ -185,8 +205,8 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate{
 
 
 extension ViewController: UICollectionViewDelegateFlowLayout{
-    
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 100, height: 100)
+        return CGSize(width: 200, height: 200)
     }
 }
