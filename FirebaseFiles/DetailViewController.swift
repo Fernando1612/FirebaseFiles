@@ -12,7 +12,6 @@ import FirebaseUI
 
 class DetailViewController: UIViewController {
 
-    
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var labelSize: UILabel!
     @IBOutlet weak var labelDate: UILabel!
@@ -21,6 +20,25 @@ class DetailViewController: UIViewController {
     var imageRef: StorageReference
     var name = ""
     var img = UIImage()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        //self.view.addBackground()
+        
+        image.sd_setImage(with: imageRef)
+        metadata()
+        image.isUserInteractionEnabled = true
+        image.clipsToBounds = true
+        image.borderImage()
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didDoubleTap(_:)))
+        
+        tapGesture.numberOfTapsRequired = 2
+        image.addGestureRecognizer(tapGesture)
+        // Do any additional setup after loading the view.
+    }
+    
     
     required init?(coder aDecoder: NSCoder) {
         let storageRef = Storage.storage().reference()
@@ -43,13 +61,34 @@ class DetailViewController: UIViewController {
           }
     }
     
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    @objc private func didDoubleTap(_ gesture: UITapGestureRecognizer){
+        guard let gestureView  = gesture.view else{
+            return
+        }
+        let size = gestureView.frame.size.width / 4
         
-        image.sd_setImage(with: imageRef)
-        metadata()
-        // Do any additional setup after loading the view.
+        let heart = UIImageView(image: UIImage(systemName: "heart.fill"))
+        heart.frame = CGRect(x: (gestureView.frame.size.width - size) / 2, y: (gestureView.frame.size.height - size) / 2, width: size, height: size)
+        heart.tintColor = .white
+        heart.alpha = 0
+        gestureView.addSubview(heart)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
+            UIView.animate(withDuration: 0.5) {
+                heart.alpha = 1
+            } completion: { done in
+                if done {
+                    UIView.animate(withDuration: 1) {
+                        heart.alpha = 0
+                    } completion: { done in
+                        if done {
+                            heart.removeFromSuperview()
+                        }
+                    }
+                }
+            }
+
+        }
     }
 }
 

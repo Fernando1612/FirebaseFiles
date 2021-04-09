@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		4CD56E972A5FB22EC7C10310 /* Pods_FirebaseFiles.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0DB9B396D73045B8A40E44C /* Pods_FirebaseFiles.framework */; };
-		5B861F64261CEBFF0083644C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5B861F63261CEBFF0083644C /* GoogleService-Info.plist */; };
 		5BE0F5D5261CBEA600E1DE41 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE0F5D4261CBEA600E1DE41 /* DetailViewController.swift */; };
+		5BF9DCB8262010320001EA44 /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF9DCB7262010320001EA44 /* UIImageView.swift */; };
 		C1F8B71225FD1803007DB650 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1F8B71125FD1803007DB650 /* AppDelegate.swift */; };
 		C1F8B71425FD1803007DB650 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1F8B71325FD1803007DB650 /* SceneDelegate.swift */; };
 		C1F8B71625FD1803007DB650 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1F8B71525FD1803007DB650 /* ViewController.swift */; };
@@ -23,8 +23,8 @@
 
 /* Begin PBXFileReference section */
 		348EF0340937DB1B2DAFB61E /* Pods-FirebaseFiles.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FirebaseFiles.debug.xcconfig"; path = "Target Support Files/Pods-FirebaseFiles/Pods-FirebaseFiles.debug.xcconfig"; sourceTree = "<group>"; };
-		5B861F63261CEBFF0083644C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5BE0F5D4261CBEA600E1DE41 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		5BF9DCB7262010320001EA44 /* UIImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageView.swift; sourceTree = "<group>"; };
 		A0A1940DC9206080C6F84312 /* Pods-FirebaseFiles.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FirebaseFiles.release.xcconfig"; path = "Target Support Files/Pods-FirebaseFiles/Pods-FirebaseFiles.release.xcconfig"; sourceTree = "<group>"; };
 		C1F8B70E25FD1803007DB650 /* FirebaseFiles.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FirebaseFiles.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C1F8B71125FD1803007DB650 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -88,11 +88,11 @@
 				C1F8B71A25FD1806007DB650 /* Assets.xcassets */,
 				C1F8B71C25FD1806007DB650 /* LaunchScreen.storyboard */,
 				C1F8B73425FD1B8D007DB650 /* GoogleService-Info.plist */,
-				5B861F63261CEBFF0083644C /* GoogleService-Info.plist */,
 				C1F8B71F25FD1806007DB650 /* Info.plist */,
 				C1F8B73725FD3433007DB650 /* ImageCollectionViewCell.swift */,
 				C1F8B73825FD3433007DB650 /* ImageCollectionViewCell.xib */,
 				5BE0F5D4261CBEA600E1DE41 /* DetailViewController.swift */,
+				5BF9DCB7262010320001EA44 /* UIImageView.swift */,
 			);
 			path = FirebaseFiles;
 			sourceTree = "<group>";
@@ -170,7 +170,6 @@
 				C1F8B71B25FD1806007DB650 /* Assets.xcassets in Resources */,
 				C1F8B71925FD1803007DB650 /* Main.storyboard in Resources */,
 				C1F8B73A25FD3433007DB650 /* ImageCollectionViewCell.xib in Resources */,
-				5B861F64261CEBFF0083644C /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -227,6 +226,7 @@
 				C1F8B71225FD1803007DB650 /* AppDelegate.swift in Sources */,
 				5BE0F5D5261CBEA600E1DE41 /* DetailViewController.swift in Sources */,
 				C1F8B73925FD3433007DB650 /* ImageCollectionViewCell.swift in Sources */,
+				5BF9DCB8262010320001EA44 /* UIImageView.swift in Sources */,
 				C1F8B71425FD1803007DB650 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

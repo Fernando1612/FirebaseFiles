@@ -7,6 +7,7 @@ target 'FirebaseFiles' do
 
   # Pods for FirebaseFiles
 	
+	pod 'TinyConstraints'	
 	pod 'Firebase/Storage'
 	pod 'FirebaseUI/Storage'
 	pod 'Firebase/RemoteConfig'

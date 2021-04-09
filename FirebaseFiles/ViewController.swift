@@ -23,17 +23,30 @@ class ViewController: UIViewController{
     
     let storage = Storage.storage()
     
-    var idImage: Int = 1
-    var contador: Int = 0
+    let keyOne = "firstStringKey"
+    
+    var idImage: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         print("viewDidLoad")
         
+        //self.view.backgroundColor = UIColor(patternImage: UIImage(named: "background")!)
+        self.view.addBackground()
+        
+        imagenes()
+        
+        idImage = UserDefaults.standard.integer(forKey: keyOne)
+        if idImage == 0{
+            idImage = 1
+        }
         
         let nib = UINib.init(nibName: "ImageCollectionViewCell", bundle: nil)
         coleccion.register(nib, forCellWithReuseIdentifier: "imageCellXIB")
+        coleccion.backgroundColor = nil
+        
+        userImageView.borderImage()
         
         let isButtonEnabled = RemoteConfig.remoteConfig().configValue(forKey: "isButtonEnabled").boolValue
         
@@ -41,9 +54,6 @@ class ViewController: UIViewController{
             button.isEnabled = isButtonEnabled
             button.backgroundColor = .red
         }
-
-        //downloadImage()
-        imagenes()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -75,43 +85,28 @@ class ViewController: UIViewController{
         
         
         let storageRef = storage.reference()
-        let imageRef = storageRef.child("images").child("profile").child("\(idImage + contador).jpg")
-        contador = contador + 1
+        let imageRef = storageRef.child("images").child("profile").child("\(idImage).jpg")
+        idImage += 1
+        
+        UserDefaults.standard.set(idImage, forKey: keyOne)
+        UserDefaults.standard.synchronize()
+        
         let uploadMetaData = StorageMetadata()
         uploadMetaData.contentType = "image/jpeg"
         
-        imageRef.putData(imageData, metadata: uploadMetaData) { (metadata, error) in
+        imageRef.putData(imageData, metadata: uploadMetaData) { [self] (metadata, error) in
             activityIndicator.stopAnimating()
             activityIndicator.removeFromSuperview()
             if let error = error{
                 print(error.localizedDescription)
             } else {
                 print("Image metadata: \(String(describing: metadata))")
+                self.downloadImage(imagen: imageRef)
             }
         }
     }
     
-    func downloadImage(imagen: StorageReference){
-        //let storageRef = storage.reference()
-        
-        //let imageDownloadUrlRef = storageRef.child("images/profile/userProfile.jpg")
-        
-        /*let imagePrubea = storageRef.child("images/profile/1.jpg")
-        let imagePrubea2 = storageRef.child("images/profile/2.jpg")
-        let imagePrubea3 = storageRef.child("images/profile/3.jpg")
-        
-        print("Punto de prueba")
-        print(imagePrubea)
-        
-        images.append(imagePrubea)
-        images.append(imagePrubea2)
-        images.append(imagePrubea3)*/
-        images.append(imagen)
-        
-        
-        userImageView.sd_setImage(with: imagen, placeholderImage: placeholderImage)
-        
-    }
+
     
     
     func imagenes(){
@@ -124,11 +119,17 @@ class ViewController: UIViewController{
              for item in result.items {
                 downloadImage(imagen: item)
             }
-            
-            print("imagenes: \(self.images)")
-            
         }
+    }
+    
+    func downloadImage(imagen: StorageReference){
+        images.append(imagen)
         
+        userImageView.sd_setImage(with: imagen)
+        
+        DispatchQueue.main.async {
+            self.coleccion.reloadData()
+        }
     }
     
 }
@@ -137,13 +138,6 @@ extension ViewController: UIImagePickerControllerDelegate{
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let userImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage, let optimizedImageData = userImage.jpegData(compressionQuality: 0.6){
             uploadImage(imageData: optimizedImageData)
-            
-            //poner imagen cuando se sube
-            /*
-            DispatchQueue.main.async {
-                self.userImageView.image = userImage
-            }*/
-            
         }
         picker.dismiss(animated: true, completion: nil)
     }
@@ -163,28 +157,17 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate{
         let cellScale: CGFloat = 0.35
         let screenSize = UIScreen.main.bounds.size
         let cellWidth = floor(screenSize.width * cellScale)
-        let cellHeight = floor(screenSize.height * cellScale)
-        let insetX = (view.bounds.width - cellWidth) / 2.0
-        let insetY = (view.bounds.height - cellHeight) / 2.0
-        return UIEdgeInsets(top: 0, left: insetX, bottom: insetY, right: insetX)
+        let insetX = (collectionView.bounds.width - cellWidth) / 2.0
+        return UIEdgeInsets(top: 0, left: insetX, bottom: 0, right: insetX)
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "imageCellXIB", for: indexPath) as! ImageCollectionViewCell
         
-        
-        let ref = images[indexPath.row]
-        print("Elementos en el arreglo")
-        print(images.count)
+        let ref = images[indexPath.item]
         cell.imageViewCell.sd_setImage(with: ref, placeholderImage: placeholderImage)
         
-        /*ref.downloadURL { (url, error) in
-            if let error = error{
-                print(error.localizedDescription)
-            } else {
-                print("URL:  \(String(describing: url!))")
-            }
-        }*/
+        cell.imageViewCell.roundedImage()
         
         return cell
     }
@@ -203,10 +186,11 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate{
     
 }
 
-
 extension ViewController: UICollectionViewDelegateFlowLayout{
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 200, height: 200)
     }
 }
+
+
