@@ -16,6 +16,7 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var labelSize: UILabel!
     @IBOutlet weak var labelDate: UILabel!
     @IBOutlet weak var image: UIImageView!
+    @IBOutlet weak var imageContainer: UIView!
     
     var imageRef: StorageReference
     var name = ""
@@ -30,7 +31,7 @@ class DetailViewController: UIViewController {
         metadata()
         image.isUserInteractionEnabled = true
         image.clipsToBounds = true
-        image.borderImage()
+        image.applyshadowWithCorner(containerView: imageContainer)
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didDoubleTap(_:)))
         

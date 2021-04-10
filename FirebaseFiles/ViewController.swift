@@ -12,10 +12,9 @@ import FirebaseUI
 class ViewController: UIViewController{
 
     @IBOutlet var userImageView: UIImageView!
-    
     @IBOutlet var coleccion: UICollectionView!
-    
     @IBOutlet var button: UIButton!
+    @IBOutlet weak var UserImageContainer: UIView!
     
     var images: [StorageReference] = []
     
@@ -46,7 +45,7 @@ class ViewController: UIViewController{
         coleccion.register(nib, forCellWithReuseIdentifier: "imageCellXIB")
         coleccion.backgroundColor = nil
         
-        userImageView.borderImage()
+        userImageView.applyshadowWithCorner(containerView: UserImageContainer)
         
         let isButtonEnabled = RemoteConfig.remoteConfig().configValue(forKey: "isButtonEnabled").boolValue
         
@@ -154,7 +153,7 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate{
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        let cellScale: CGFloat = 0.35
+        let cellScale: CGFloat = 0.5
         let screenSize = UIScreen.main.bounds.size
         let cellWidth = floor(screenSize.width * cellScale)
         let insetX = (collectionView.bounds.width - cellWidth) / 2.0
@@ -168,6 +167,13 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate{
         cell.imageViewCell.sd_setImage(with: ref, placeholderImage: placeholderImage)
         
         cell.imageViewCell.roundedImage()
+        
+        cell.contentView.clipsToBounds = false
+        cell.contentView.layer.shadowColor = UIColor.black.cgColor
+        cell.contentView.layer.shadowOpacity = 1
+        cell.contentView.layer.shadowOffset = CGSize.zero
+        cell.contentView.layer.shadowRadius = 10
+        
         
         return cell
     }

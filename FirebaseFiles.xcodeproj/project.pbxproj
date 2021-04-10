@@ -84,15 +84,15 @@
 				C1F8B71125FD1803007DB650 /* AppDelegate.swift */,
 				C1F8B71325FD1803007DB650 /* SceneDelegate.swift */,
 				C1F8B71525FD1803007DB650 /* ViewController.swift */,
+				C1F8B73725FD3433007DB650 /* ImageCollectionViewCell.swift */,
+				5BE0F5D4261CBEA600E1DE41 /* DetailViewController.swift */,
+				5BF9DCB7262010320001EA44 /* UIImageView.swift */,
 				C1F8B71725FD1803007DB650 /* Main.storyboard */,
+				C1F8B73825FD3433007DB650 /* ImageCollectionViewCell.xib */,
 				C1F8B71A25FD1806007DB650 /* Assets.xcassets */,
 				C1F8B71C25FD1806007DB650 /* LaunchScreen.storyboard */,
 				C1F8B73425FD1B8D007DB650 /* GoogleService-Info.plist */,
 				C1F8B71F25FD1806007DB650 /* Info.plist */,
-				C1F8B73725FD3433007DB650 /* ImageCollectionViewCell.swift */,
-				C1F8B73825FD3433007DB650 /* ImageCollectionViewCell.xib */,
-				5BE0F5D4261CBEA600E1DE41 /* DetailViewController.swift */,
-				5BF9DCB7262010320001EA44 /* UIImageView.swift */,
 			);
 			path = FirebaseFiles;
 			sourceTree = "<group>";

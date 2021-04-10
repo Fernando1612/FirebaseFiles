@@ -13,11 +13,6 @@ extension UIImageView{
         self.layer.cornerRadius = self.frame.size.width / 2
         self.clipsToBounds = true
     }
-    
-    func borderImage(){
-        self.layer.cornerRadius = self.frame.size.width / 4
-        self.clipsToBounds = true
-    }
 }
 
 extension UIView{
@@ -32,5 +27,19 @@ extension UIView{
         
         self.addSubview(imageViewBackground)
         self.sendSubviewToBack(imageViewBackground)
+    }
+}
+
+extension UIImageView {
+    func applyshadowWithCorner(containerView : UIView){
+        containerView.clipsToBounds = false
+        containerView.layer.shadowColor = UIColor.black.cgColor
+        containerView.layer.shadowOpacity = 1
+        containerView.layer.shadowOffset = CGSize.zero
+        containerView.layer.shadowRadius = 10
+        containerView.layer.cornerRadius = self.frame.size.width / 4
+        containerView.layer.shadowPath = UIBezierPath(roundedRect: containerView.bounds, cornerRadius: self.frame.size.width / 4).cgPath
+        self.clipsToBounds = true
+        self.layer.cornerRadius = self.frame.size.width / 4
     }
 }
