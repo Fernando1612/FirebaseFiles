@@ -24,9 +24,7 @@ class DetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        //self.view.addBackground()
-        
+        // Do any additional setup after loading the view.
         image.sd_setImage(with: imageRef)
         metadata()
         image.isUserInteractionEnabled = true
@@ -37,7 +35,6 @@ class DetailViewController: UIViewController {
         
         tapGesture.numberOfTapsRequired = 2
         image.addGestureRecognizer(tapGesture)
-        // Do any additional setup after loading the view.
     }
     
     

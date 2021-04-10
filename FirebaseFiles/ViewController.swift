@@ -31,7 +31,6 @@ class ViewController: UIViewController{
         // Do any additional setup after loading the view.
         print("viewDidLoad")
         
-        //self.view.backgroundColor = UIColor(patternImage: UIImage(named: "background")!)
         self.view.addBackground()
         
         imagenes()
@@ -40,6 +39,8 @@ class ViewController: UIViewController{
         if idImage == 0{
             idImage = 1
         }
+        
+        print("Id de la imagen \(idImage)")
         
         let nib = UINib.init(nibName: "ImageCollectionViewCell", bundle: nil)
         coleccion.register(nib, forCellWithReuseIdentifier: "imageCellXIB")
@@ -53,18 +54,6 @@ class ViewController: UIViewController{
             button.isEnabled = isButtonEnabled
             button.backgroundColor = .red
         }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        print("viewWillAppear")
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        print("viewDidAppear")
     }
     
     @IBAction func uploadImage(_ sender: UIButton){
@@ -81,8 +70,6 @@ class ViewController: UIViewController{
         activityIndicator.startAnimating()
         activityIndicator.center = self.view.center
         self.view.addSubview(activityIndicator)
-        
-        
         let storageRef = storage.reference()
         let imageRef = storageRef.child("images").child("profile").child("\(idImage).jpg")
         idImage += 1
@@ -146,7 +133,6 @@ extension ViewController: UINavigationControllerDelegate{
     
 }
 
-
 extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return images.count
@@ -167,13 +153,11 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate{
         cell.imageViewCell.sd_setImage(with: ref, placeholderImage: placeholderImage)
         
         cell.imageViewCell.roundedImage()
-        
         cell.contentView.clipsToBounds = false
         cell.contentView.layer.shadowColor = UIColor.black.cgColor
         cell.contentView.layer.shadowOpacity = 1
         cell.contentView.layer.shadowOffset = CGSize.zero
         cell.contentView.layer.shadowRadius = 10
-        
         
         return cell
     }
@@ -184,7 +168,6 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate{
         let viewController = storyboard?.instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController
         
         let ref = images[indexPath.item]
-        
         viewController?.imageRef = ref
         
         self.navigationController?.pushViewController(viewController!, animated: true)
